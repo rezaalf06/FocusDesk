@@ -1,4 +1,4 @@
-# FocusDesk AI
+# FocusDesk 
 
 **Sistem Pemantauan Pola Aktivitas Fisik Saat Belajar Berbasis IoT dan Artificial Intelligence**
 
@@ -215,4 +215,4 @@ File tersebut berisi hasil pengolahan dan prediksi aktivitas selama sistem berja
 
 ---
 
-**FocusDesk AI — IoT and Artificial Intelligence Project**
+**FocusDesk — IoT and Artificial Intelligence Project**
