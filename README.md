@@ -19,7 +19,40 @@ Sistem mengklasifikasikan aktivitas pengguna menjadi tiga kategori:
 
 ## 2. Arsitektur Sistem
 
-FocusDesk AI terdiri dari tiga bagian utama.
+FocusDesk AI terdiri dari tiga bagian utama, yaitu Phone Edge, Laptop Edge, serta Cloud dan Data Fusion.
+
+### Diagram Arsitektur
+
+```mermaid
+flowchart TB
+    subgraph EDGE["EDGE DEVICES"]
+        HP["SMARTPHONE<br/>Phone Edge<br/><br/>Accelerometer<br/>Light Sensor<br/>Termux + Termux:API"]
+        LAPTOP["LAPTOP<br/>Laptop Edge<br/><br/>Webcam<br/>MediaPipe + OpenCV<br/>Keyboard & Mouse"]
+    end
+
+    subgraph CLOUD["CLOUD COMMUNICATION"]
+        MQTT[("EMQX Cloud<br/>MQTT Broker")]
+    end
+
+    subgraph PROCESS["DATA PROCESSING - LAPTOP"]
+        FUSION["data_fusion.py<br/><br/>Menerima data HP dan laptop<br/>Pairing berdasarkan timestamp<br/>Toleransi maksimal 2 detik"]
+        FEATURES["Feature Fusion<br/><br/>12 fitur gabungan"]
+        MODEL["Random Forest Classifier<br/><br/>focusdesk_model.pkl"]
+        RESULT["Hasil Prediksi<br/><br/>BELAJAR<br/>TERDISTRAKSI<br/>MENINGGALKAN_MEJA"]
+        CSV[("hasil_prediksi_focusdesk.csv")]
+    end
+
+    DATASET[("dataset_focusdesk.csv")] --> TRAIN["train_model.py"]
+    TRAIN --> MODEL
+
+    HP -->|"Data sensor HP"| MQTT
+    LAPTOP -->|"Data aktivitas laptop"| MQTT
+    MQTT -->|"MQTT Subscribe"| FUSION
+    FUSION --> FEATURES
+    FEATURES --> MODEL
+    MODEL --> RESULT
+    RESULT --> CSV
+```
 
 ### A. Phone Edge (Smartphone)
 
@@ -47,7 +80,9 @@ Data aktivitas laptop dikirim ke MQTT Broker.
 
 Menggunakan **EMQX Cloud** sebagai MQTT Broker.
 
-Program `data_fusion.py` menerima data dari smartphone dan laptop, menggabungkannya berdasarkan timestamp, kemudian meneruskan data ke model Machine Learning untuk menghasilkan prediksi.
+Program `data_fusion.py` menerima data dari smartphone dan laptop, menggabungkannya berdasarkan timestamp dengan toleransi maksimal dua detik, kemudian meneruskan data gabungan ke model Machine Learning untuk menghasilkan prediksi.
+
+Model Random Forest sebelumnya dilatih menggunakan dataset melalui program `train_model.py` dan disimpan dalam file `focusdesk_model.pkl`.
 
 ---
 
