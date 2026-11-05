@@ -1,63 +1,57 @@
-# FocusDesk 
+# FocusDesk AI
+### Sistem Pemantauan Pola Aktivitas Fisik Saat Belajar Berbasis IoT dan Artificial Intelligence
 
-**Sistem Pemantauan Pola Aktivitas Fisik Saat Belajar Berbasis IoT dan Artificial Intelligence**
+## 1. Tentang FocusDesk AI
 
-## 1. Deskripsi Proyek
+FocusDesk AI adalah sistem berbasis Internet of Things (IoT) dan Artificial Intelligence (AI) yang dirancang untuk memantau pola aktivitas fisik seseorang selama sesi belajar.
 
-FocusDesk AI merupakan sistem berbasis Internet of Things (IoT) dan Artificial Intelligence (AI) yang dirancang untuk memantau pola aktivitas fisik seseorang selama sesi belajar.
+Sistem menggunakan sensor smartphone dan laptop untuk mengumpulkan data aktivitas. Data dikirim melalui MQTT, digabungkan berdasarkan timestamp, kemudian dianalisis menggunakan model Machine Learning **Random Forest Classifier**.
 
-Sistem memanfaatkan sensor pada smartphone dan laptop untuk mengumpulkan data aktivitas. Data tersebut dikirim melalui protokol MQTT, kemudian digabungkan dan dianalisis menggunakan model Machine Learning untuk mengklasifikasikan aktivitas pengguna.
+Sistem mengklasifikasikan aktivitas pengguna menjadi tiga kategori:
 
-## 2. Tujuan
+- `belajar`
+- `terdistraksi`
+- `meninggalkan_meja`
 
-- Memantau pola aktivitas fisik selama belajar.
-- Mengintegrasikan beberapa perangkat dan sensor melalui IoT.
-- Menerapkan Machine Learning untuk mengklasifikasikan aktivitas.
-- Menghasilkan prediksi aktivitas berdasarkan data sensor.
+**Catatan:** Sistem mengklasifikasikan pola aktivitas fisik berdasarkan data sensor, bukan mengukur kondisi mental atau tingkat konsentrasi secara langsung.
 
-## 3. Arsitektur Sistem
+---
 
-Sistem terdiri dari tiga bagian utama:
+## 2. Arsitektur Sistem
+
+FocusDesk AI terdiri dari tiga bagian utama.
 
 ### A. Phone Edge (Smartphone)
+
 Menggunakan Android dengan Termux dan Termux:API.
 
 Sensor yang digunakan:
-- Accelerometer: mendeteksi perubahan gerakan smartphone.
-- Light Sensor: mengukur intensitas cahaya di sekitar perangkat.
+- **Accelerometer:** mendeteksi perubahan gerakan smartphone.
+- **Light Sensor:** mengukur intensitas cahaya di sekitar perangkat.
 
-Data dikirim ke MQTT Broker.
+Data sensor dikirim ke MQTT Broker.
 
 ### B. Laptop Edge
+
 Menggunakan webcam dan perangkat input laptop.
 
 Komponen yang digunakan:
-- Webcam: mendeteksi keberadaan wajah.
-- MediaPipe: membantu mendeteksi wajah dan memperkirakan posisi kepala.
-- OpenCV: memproses citra dan memperkirakan orientasi kepala.
-- Keyboard dan Mouse: mendeteksi aktivitas interaksi pengguna.
+- **Webcam:** mengambil gambar untuk mendeteksi keberadaan wajah.
+- **MediaPipe:** membantu mendeteksi wajah dan memperkirakan posisi kepala.
+- **OpenCV:** memproses citra dan memperkirakan orientasi kepala.
+- **Keyboard dan Mouse:** mendeteksi aktivitas interaksi pengguna.
 
-Data dikirim ke MQTT Broker.
+Data aktivitas laptop dikirim ke MQTT Broker.
 
 ### C. Cloud dan Data Fusion
-Menggunakan EMQX Cloud sebagai MQTT Broker.
 
-Data dari smartphone dan laptop diterima oleh program `data_fusion.py`, kemudian digabungkan berdasarkan timestamp untuk diproses oleh model Machine Learning.
+Menggunakan **EMQX Cloud** sebagai MQTT Broker.
 
-## 4. Penerapan Artificial Intelligence
+Program `data_fusion.py` menerima data dari smartphone dan laptop, menggabungkannya berdasarkan timestamp, kemudian meneruskan data ke model Machine Learning untuk menghasilkan prediksi.
 
-FocusDesk AI menggunakan algoritma **Random Forest Classifier** untuk mengklasifikasikan pola aktivitas pengguna.
+---
 
-Kategori klasifikasi:
-1. `belajar`
-2. `terdistraksi`
-3. `meninggalkan_meja`
-
-Model dilatih menggunakan dataset aktivitas yang dikumpulkan selama pengujian.
-
-Hasil prediksi disimpan dalam file `hasil_prediksi_focusdesk.csv`.
-
-## 5. Teknologi yang Digunakan
+## 3. Teknologi yang Digunakan
 
 | Komponen | Teknologi |
 |---|---|
@@ -69,48 +63,46 @@ Hasil prediksi disimpan dalam file `hasil_prediksi_focusdesk.csv`.
 | Komunikasi IoT | MQTT |
 | MQTT Broker | EMQX Cloud |
 | Machine Learning | Scikit-learn |
-| Model AI | Random Forest |
+| Algoritma AI | Random Forest |
 | Pengolahan data | Pandas, NumPy |
-| Model serialization | Joblib |
+| Penyimpanan model | Joblib |
 
-## 6. Struktur Folder
+---
 
-```text
-FocusDesk/
-│
-├── hp_sensor_MQTT.py
-├── laptop_edge.py
-├── data_fusion.py
-├── train_model.py
-│
-├── focusdesk_model.pkl
-├── face_landmarker.task
-│
-├── config_private.py
-├── config_private.example.py
-│
-├── requirements.txt
-├── .gitignore
-└── README.md
-```
+# 4. Panduan Instalasi
 
-**Catatan:**
-- `config_private.py` berisi kredensial MQTT dan tidak boleh diunggah ke GitHub.
-- `config_private.example.py` merupakan template konfigurasi yang dapat disalin oleh anggota kelompok.
-- `focusdesk_model.pkl` merupakan model Machine Learning yang telah dilatih.
-- `face_landmarker.task` merupakan file model untuk deteksi wajah.
-- Dataset dan hasil prediksi tidak disertakan dalam repository karena bersifat lokal.
+Ikuti langkah-langkah berikut untuk mempersiapkan FocusDesk AI.
 
-## 7. Instalasi dan Konfigurasi
+## Langkah 1 — Persiapan Perangkat
 
-### A. Clone Repository
+Siapkan perangkat berikut:
+
+1. Laptop atau komputer Windows.
+2. Smartphone Android.
+3. Koneksi internet pada kedua perangkat.
+4. Python yang sudah terinstal pada laptop.
+5. Termux dan Termux:API pada smartphone.
+6. Akun dan konfigurasi MQTT EMQX Cloud.
+
+Pastikan laptop dan smartphone dapat terhubung ke internet.
+
+## Langkah 2 — Clone Repository
+
+Buka terminal atau VS Code, kemudian jalankan:
 
 ```bash
-git clone URL_REPOSITORY
+git clone https://github.com/rezaalf06/FocusDesk.git
+```
+
+Masuk ke folder proyek:
+
+```bash
 cd FocusDesk
 ```
 
-### B. Membuat Virtual Environment
+## Langkah 3 — Membuat Virtual Environment
+
+Pada laptop, buat virtual environment:
 
 ```bash
 python -m venv .venv
@@ -122,21 +114,29 @@ Aktifkan virtual environment pada Windows:
 .venv\Scripts\activate
 ```
 
-### C. Instalasi Dependencies
+Jika berhasil, nama `.venv` akan muncul pada bagian awal terminal.
+
+## Langkah 4 — Instalasi Dependencies
+
+Pastikan virtual environment sudah aktif, kemudian jalankan:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### D. Konfigurasi MQTT
+Tunggu hingga seluruh library selesai diinstal.
 
-Salin file template:
+## Langkah 5 — Konfigurasi MQTT
+
+Sistem menggunakan EMQX Cloud sebagai perantara komunikasi antara smartphone dan laptop.
+
+Salin file konfigurasi template:
 
 ```bash
 copy config_private.example.py config_private.py
 ```
 
-Buka `config_private.py`, kemudian isi konfigurasi sesuai kredensial EMQX Cloud masing-masing.
+Buka file `config_private.py`, kemudian masukkan kredensial MQTT EMQX Cloud yang digunakan:
 
 ```python
 BROKER = "YOUR_EMQX_HOSTNAME"
@@ -145,68 +145,182 @@ USERNAME = "YOUR_MQTT_USERNAME"
 PASSWORD = "YOUR_MQTT_PASSWORD"
 ```
 
-**Penting:** Jangan mengunggah `config_private.py` ke repository GitHub.
+Ganti nilai tersebut dengan konfigurasi MQTT masing-masing.
 
-### E. Persiapan Smartphone
+**Penting:**
+- Jangan mengunggah `config_private.py` ke GitHub.
+- Jangan membagikan username dan password MQTT kepada pihak yang tidak berkepentingan.
+- File `config_private.example.py` hanya merupakan template konfigurasi.
 
-1. Instal Termux dan Termux:API.
-2. Pastikan izin sensor telah diberikan.
-3. Pastikan smartphone terhubung ke internet.
-4. Jalankan program `hp_sensor_MQTT.py` melalui Termux.
+## Langkah 6 — Persiapan Smartphone
 
-## 8. Menjalankan Sistem
+Pada smartphone Android:
 
-Jalankan program dalam urutan berikut:
+1. Instal Termux.
+2. Instal Termux:API.
+3. Berikan izin akses sensor yang diperlukan.
+4. Pastikan smartphone terhubung ke internet.
+5. Siapkan file `hp_sensor_MQTT.py` dan `config_private.py` pada lingkungan Termux.
+6. Pastikan konfigurasi MQTT pada smartphone sama dengan konfigurasi yang digunakan laptop.
 
-**Terminal 1 — Data Fusion**
+Program smartphone dijalankan melalui Termux.
+
+---
+
+# 5. Panduan Menjalankan Sistem
+
+Setelah seluruh persiapan selesai, jalankan ketiga bagian sistem berikut.
+
+**Urutan menjalankan program:**
+
+### A. Terminal 1 — Data Fusion
+
+Pada laptop, aktifkan virtual environment dan jalankan:
 
 ```bash
 python data_fusion.py
 ```
 
-Program akan menerima data dari smartphone dan laptop, menggabungkan data, serta menghasilkan prediksi aktivitas.
+Program ini berfungsi untuk:
+- Terhubung ke MQTT Broker.
+- Menerima data dari smartphone dan laptop.
+- Menggabungkan data berdasarkan timestamp.
+- Mengolah data menggunakan model Random Forest.
+- Menghasilkan prediksi aktivitas.
+- Menyimpan hasil prediksi ke file CSV.
 
-**Terminal 2 — Laptop Edge**
+Biarkan terminal tetap berjalan.
+
+### B. Terminal 2 — Laptop Edge
+
+Buka terminal baru pada folder proyek, aktifkan virtual environment, kemudian jalankan:
 
 ```bash
 python laptop_edge.py
 ```
 
-Program akan mengaktifkan webcam, mendeteksi wajah, memproses orientasi kepala, dan memantau aktivitas keyboard serta mouse.
+Program akan:
+- Mengaktifkan webcam.
+- Mendeteksi keberadaan wajah.
+- Memperkirakan orientasi kepala.
+- Memantau aktivitas keyboard dan mouse.
+- Mengirimkan data ke MQTT Broker.
 
-**Smartphone — Phone Edge**
+Pastikan webcam dapat digunakan oleh program.
+
+### C. Smartphone — Phone Edge
+
+Buka Termux pada smartphone, kemudian jalankan:
 
 ```bash
 python hp_sensor_MQTT.py
 ```
 
-Program akan membaca sensor smartphone dan mengirimkan datanya ke MQTT Broker.
+Program akan:
+- Membaca data accelerometer.
+- Membaca data light sensor.
+- Mengolah data sensor.
+- Mengirimkan data ke MQTT Broker.
 
-Pastikan seluruh perangkat menggunakan konfigurasi broker MQTT yang sesuai.
+Pastikan aplikasi Termux tetap berjalan selama proses pengujian.
 
-## 9. Output Sistem
+**Catatan:** Ketiga program harus berjalan bersamaan agar proses penggabungan data dan prediksi dapat berlangsung.
 
-Sistem menghasilkan klasifikasi aktivitas berupa:
+---
 
-- BELAJAR
-- TERDISTRAKSI
-- MENINGGALKAN_MEJA
+# 6. Melihat Hasil Prediksi
 
-Hasil prediksi juga disimpan dalam:
+Jika seluruh perangkat berhasil terhubung dan data diterima, program `data_fusion.py` akan menampilkan hasil klasifikasi aktivitas.
+
+Kategori hasil prediksi:
+
+| Kategori | Keterangan |
+|---|---|
+| BELAJAR | Pola aktivitas yang dikategorikan sebagai belajar |
+| TERDISTRAKSI | Pola aktivitas yang dikategorikan sebagai terdistraksi |
+| MENINGGALKAN_MEJA | Pola aktivitas yang dikategorikan sebagai meninggalkan meja |
+
+Hasil prediksi juga disimpan secara otomatis dalam file:
 
 ```text
 hasil_prediksi_focusdesk.csv
 ```
 
-File tersebut berisi hasil pengolahan dan prediksi aktivitas selama sistem berjalan.
+File tersebut berisi data hasil pemrosesan dan klasifikasi aktivitas selama sistem berjalan.
 
-## 10. Batasan Sistem
+---
+
+# 7. Struktur File Proyek
+
+Berikut fungsi masing-masing file utama:
+
+| File | Fungsi |
+|---|---|
+| `hp_sensor_MQTT.py` | Membaca sensor smartphone dan mengirim data melalui MQTT |
+| `laptop_edge.py` | Mengumpulkan data webcam, orientasi kepala, keyboard, dan mouse |
+| `data_fusion.py` | Menerima, menggabungkan, dan memprediksi data dari kedua perangkat |
+| `train_model.py` | Melatih model Machine Learning |
+| `focusdesk_model.pkl` | Model Random Forest yang telah dilatih |
+| `face_landmarker.task` | File model MediaPipe untuk deteksi wajah |
+| `config_private.example.py` | Template konfigurasi MQTT |
+| `requirements.txt` | Daftar library Python yang dibutuhkan |
+| `.gitignore` | Mengatur file yang tidak perlu diunggah ke GitHub |
+
+**File tambahan yang dihasilkan secara lokal:**
+
+- `config_private.py`: menyimpan kredensial MQTT.
+- `dataset_focusdesk.csv`: menyimpan dataset pelatihan.
+- `hasil_prediksi_focusdesk.csv`: menyimpan hasil prediksi.
+
+File konfigurasi pribadi dan dataset lokal tidak disertakan dalam repository.
+
+---
+
+# 8. Troubleshooting
+
+Beberapa hal yang perlu diperiksa apabila sistem tidak berjalan sebagaimana mestinya:
+
+**1. Program tidak dapat terhubung ke MQTT**
+- Periksa koneksi internet.
+- Periksa hostname dan port EMQX Cloud.
+- Pastikan username dan password benar.
+- Pastikan konfigurasi MQTT pada kedua perangkat sesuai.
+
+**2. Data smartphone tidak diterima**
+- Pastikan Termux dan Termux:API sudah terinstal.
+- Periksa izin akses sensor.
+- Pastikan program `hp_sensor_MQTT.py` masih berjalan.
+
+**3. Webcam tidak terdeteksi**
+- Pastikan webcam tidak sedang digunakan aplikasi lain.
+- Periksa izin akses kamera.
+- Pastikan file `face_landmarker.task` tersedia di folder proyek.
+
+**4. Model Machine Learning tidak ditemukan**
+- Pastikan file `focusdesk_model.pkl` tersedia di folder proyek.
+- Jalankan program dari direktori utama FocusDesk.
+
+**5. Library Python mengalami error**
+- Pastikan virtual environment sudah aktif.
+- Jalankan kembali instalasi dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+# 9. Batasan Sistem
 
 - Klasifikasi didasarkan pada pola aktivitas fisik dan data sensor, bukan pengukuran langsung terhadap kondisi mental atau tingkat konsentrasi seseorang.
-- Akurasi model masih dapat dipengaruhi oleh kondisi lingkungan, posisi perangkat, dan variasi aktivitas pengguna.
+- Hasil klasifikasi dapat dipengaruhi oleh kondisi lingkungan dan posisi perangkat.
 - Dataset pengujian masih terbatas sehingga kemampuan generalisasi model perlu diuji lebih lanjut.
 
-## 11. Pengembangan Selanjutnya
+---
+
+# 10. Pengembangan Selanjutnya
+
+Beberapa pengembangan yang dapat dilakukan:
 
 - Menambah variasi dataset dari lebih banyak pengguna.
 - Meningkatkan kemampuan generalisasi model.
