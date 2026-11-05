@@ -1,0 +1,53 @@
+# ==========================================
+# Python Virtual Environment
+# Mengabaikan folder lingkungan virtual Python
+# ==========================================
+.venv/
+venv/
+env/
+
+# ==========================================
+# Python Cache
+# Mengabaikan file cache dan hasil kompilasi Python
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ==========================================
+# Environment Variables & Credentials
+# Mengabaikan file konfigurasi dan informasi rahasia
+# ==========================================
+.env
+.env.*
+!.env.example
+secrets/
+credentials/
+config_private.py
+
+# ==========================================
+# Personal Dataset & Prediction Results
+# Mengabaikan dataset dan hasil prediksi yang bersifat pribadi
+# ==========================================
+dataset_focusdesk.csv
+hasil_prediksi_focusdesk.csv
+*.log
+import_log.txt
+
+# ==========================================
+# Temporary & Personal Files
+# Mengabaikan file sementara dan file pribadi
+# ==========================================
+*.xlsx
+*.xls
+*.tmp
+*.bak
+.DS_Store
+Thumbs.db
+
+# ==========================================
+# IDE & Code Editor Settings
+# Mengabaikan konfigurasi editor yang bersifat lokal
+# ==========================================
+.vscode/
+.idea/

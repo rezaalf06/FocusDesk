@@ -1,0 +1,9 @@
+paho-mqtt
+certifi
+pandas
+numpy
+scikit-learn
+joblib
+opencv-python
+mediapipe
+pynput
