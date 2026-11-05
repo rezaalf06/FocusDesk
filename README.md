@@ -1,9 +1,9 @@
-# FocusDesk AI
+# FocusDesk
 ### Sistem Pemantauan Pola Aktivitas Fisik Saat Belajar Berbasis IoT dan Artificial Intelligence
 
-## 1. Tentang FocusDesk AI
+## 1. Tentang FocusDesk 
 
-FocusDesk AI adalah sistem berbasis Internet of Things (IoT) dan Artificial Intelligence (AI) yang dirancang untuk memantau pola aktivitas fisik seseorang selama sesi belajar.
+FocusDesk adalah sistem berbasis Internet of Things (IoT) dan Artificial Intelligence (AI) yang dirancang untuk memantau pola aktivitas fisik seseorang selama sesi belajar.
 
 Sistem menggunakan sensor smartphone dan laptop untuk mengumpulkan data aktivitas. Data dikirim melalui MQTT, digabungkan berdasarkan timestamp, kemudian dianalisis menggunakan model Machine Learning **Random Forest Classifier**.
 
@@ -19,7 +19,7 @@ Sistem mengklasifikasikan aktivitas pengguna menjadi tiga kategori:
 
 ## 2. Arsitektur Sistem
 
-FocusDesk AI terdiri dari tiga bagian utama, yaitu Phone Edge, Laptop Edge, serta Cloud dan Data Fusion.
+FocusDesk terdiri dari tiga bagian utama, yaitu Phone Edge, Laptop Edge, serta Cloud dan Data Fusion.
 
 ### Diagram Arsitektur
 
@@ -106,7 +106,7 @@ Model Random Forest sebelumnya dilatih menggunakan dataset melalui program `trai
 
 # 4. Panduan Instalasi
 
-Ikuti langkah-langkah berikut untuk mempersiapkan FocusDesk AI.
+Ikuti langkah-langkah berikut untuk mempersiapkan FocusDesk.
 
 ## Langkah 1 — Persiapan Perangkat
 
